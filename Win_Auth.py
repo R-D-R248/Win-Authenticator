@@ -2,27 +2,37 @@
 import tkinter as tk
 from tkinter import messagebox
 import os
+#Chat GPT 4o Code
+from pathlib import Path
+import ctypes
+from ctypes import wintypes
+
+def get_desktop_path():
+    """Retrieve the current user's Desktop path using Windows API."""
+    CSIDL_DESKTOP = 0  # CSIDL for Desktop
+    SHGFP_TYPE_CURRENT = 0
+
+    buf = ctypes.create_unicode_buffer(wintypes.MAX_PATH)
+    ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_DESKTOP, None, SHGFP_TYPE_CURRENT, buf)
+    return Path(buf.value)
+
+# Get the Desktop path
+desktop_path = get_desktop_path()
+
+# Check for password.txt on the desktop
+path_pass = desktop_path / "password.txt"
+# End of Chat GPT 4o Code
 
 #Obtaining Username
 username = os.getlogin()
 
-# Path for the password file
-path_pass = f"C:\\Users\\{username}\\Desktop\\password_auth.txt"
-
-# Ensure the directory exists
-directory = os.path.dirname(path_pass)
-if not os.path.exists(directory):
-    os.makedirs(directory)
-
 # Validate if the user has an account
-if os.path.exists(path_pass):
-    try:
-        with open(path_pass) as f:
-            acc = 1
-    except FileNotFoundError:
-        acc = 0
-else:
+try:
+    with open(path_pass) as f:
+        acc = 1
+except FileNotFoundError:
     acc = 0
+
 
 #if user has an account
 if acc == 1:
@@ -31,7 +41,6 @@ if acc == 1:
     screen.attributes("-fullscreen", True)
     with open(path_pass, 'r') as file:
         pas = file.read().strip()
-
     # Label
     label = tk.Label(screen, text=f"Welcome {username}!", font=("Arial", 16))
     label2 = tk.Label(screen, text="Please Enter your password", font=("Arial", 12))

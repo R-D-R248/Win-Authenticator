@@ -20,7 +20,7 @@ def get_desktop_path():
 desktop_path = get_desktop_path()
 
 # Check for password.txt on the desktop
-path_pass = desktop_path / "password.txt"
+path_pass = desktop_path / "my_photo.jpg"
 # End of Chat GPT 4o Code
 
 #Obtaining Username
